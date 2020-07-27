@@ -1,0 +1,2 @@
+rootProject.name='DogWatch'
+include ':app'
