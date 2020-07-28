@@ -1,7 +1,5 @@
 package tin.novakovic.dogwatch.ui.detail
 
-import tin.novakovic.dogwatch.api.DogImages
-
 data class DetailViewState(
 
     val imageUrls: List<String> = emptyList(),

@@ -1,8 +1,5 @@
 package tin.novakovic.dogwatch
 
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
@@ -27,11 +24,10 @@ class MainActivityEspressoTest {
     }
 
     @Test
-    fun clickOnMainRecylerViewItem_ShowDetailRecyclerView() {
+    fun clickOnMainRecyclerViewItem_ShowDetailRecyclerView() {
         assertDisplayed(R.id.rv_main_activity)
         clickListItem(R.id.rv_main_activity, 0)
         assertDisplayed(R.id.rv_detail_activity)
-
     }
 
 }

@@ -1,4 +1,4 @@
-package tin.novakovic.dogwatch.api
+package tin.novakovic.core.domain_layer
 
 
 data class DogResponse(

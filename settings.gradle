@@ -1,2 +1,3 @@
 rootProject.name='DogWatch'
 include ':app'
+include ':core'

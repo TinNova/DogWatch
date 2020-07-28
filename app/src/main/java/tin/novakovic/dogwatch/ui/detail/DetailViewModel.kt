@@ -1,15 +1,16 @@
 package tin.novakovic.dogwatch.ui.detail
 
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import tin.novakovic.core.domain_layer.Dog
+import tin.novakovic.core.use_case_layer.DogHelper
 import tin.novakovic.dogwatch.DisposingViewModel
-import tin.novakovic.dogwatch.DogHelper
-import tin.novakovic.dogwatch.api.Dog
 import javax.inject.Inject
 
 class DetailViewModel @Inject constructor(private val dogHelper: DogHelper) : DisposingViewModel() {
 
     val viewState = MutableLiveData<DetailViewState>()
-    private var dogs = mutableListOf<Dog>()
 
     fun onInitView(dog: Dog) {
         fetchDogImages(dog)
@@ -17,6 +18,8 @@ class DetailViewModel @Inject constructor(private val dogHelper: DogHelper) : Di
 
     private fun fetchDogImages(dog: Dog) {
         add(dogHelper.fetchDogImages(dog)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 viewState.value =
                     DetailViewState(

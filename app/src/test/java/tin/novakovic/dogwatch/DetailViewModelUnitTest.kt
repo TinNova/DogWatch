@@ -4,8 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.schedulers.Schedulers
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.ClassRule
@@ -15,10 +13,10 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import tin.novakovic.core.domain_layer.Dog
 import tin.novakovic.core.use_case_layer.DogHelper
-import tin.novakovic.dogwatch.ui.main.MainViewModel
-import tin.novakovic.dogwatch.ui.main.MainViewState
+import tin.novakovic.dogwatch.ui.detail.DetailViewModel
+import tin.novakovic.dogwatch.ui.detail.DetailViewState
 
-class MainViewModelUnitTest {
+class DetailViewModelUnitTest {
 
     @Rule
     @JvmField
@@ -33,29 +31,30 @@ class MainViewModelUnitTest {
     @Mock
     lateinit var mockDogHelper: DogHelper
 
-    private lateinit var target: MainViewModel
+    private lateinit var target: DetailViewModel
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
-        target = MainViewModel(mockDogHelper)
+        target = DetailViewModel(mockDogHelper)
     }
 
     @Test
-    fun init_onInitView_fetchDogs_Success_viewStateEquals_dogsTrueFalseFalse() {
+    fun onInitView_fetchDogImages_successful_viewStateEquals_ImageTrueFalseFalse() {
         //given
-        val mockDogs = mock<List<Dog>>()
-        whenever(mockDogHelper.fetchAllDogs()).thenReturn(Single.just(mockDogs))
+        val mockDog = mock<Dog>()
+        val mockUrls = mock<List<String>>()
+
+        whenever(mockDogHelper.fetchDogImages(mockDog)).thenReturn(Single.just(mockUrls))
 
         //when
-        target.onInitView()
+        target.onInitView(mockDog)
 
         //then
         assertEquals(
-            MainViewState(
-                mockDogs,
+            DetailViewState(
+                mockUrls,
                 isPresenting = true,
                 isLoading = false,
                 isError = false
@@ -64,16 +63,18 @@ class MainViewModelUnitTest {
     }
 
     @Test
-    fun init_onInitView_fetchDogs_Failure_viewStateEquals_falseFalseTrue() {
+    fun onInitView_fetchDogImages_failure_viewStateEquals_TrueFalseFalse() {
         //given
-        whenever(mockDogHelper.fetchAllDogs()).thenReturn(Single.error(Throwable()))
+        val mockDog = mock<Dog>()
+
+        whenever(mockDogHelper.fetchDogImages(mockDog)).thenReturn(Single.error(Throwable()))
 
         //when
-        target.onInitView()
+        target.onInitView(mockDog)
 
         //then
         assertEquals(
-            MainViewState(
+            DetailViewState(
                 isPresenting = false,
                 isLoading = false,
                 isError = true

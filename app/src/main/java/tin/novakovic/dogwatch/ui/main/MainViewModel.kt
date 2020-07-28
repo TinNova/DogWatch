@@ -1,8 +1,10 @@
 package tin.novakovic.dogwatch.ui.main
 
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import tin.novakovic.dogwatch.DisposingViewModel
-import tin.novakovic.dogwatch.DogHelper
+import tin.novakovic.core.use_case_layer.DogHelper
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(private val dogHelper: DogHelper) : DisposingViewModel() {
@@ -15,6 +17,8 @@ class MainViewModel @Inject constructor(private val dogHelper: DogHelper) : Disp
 
     private fun fetchDogs() {
         add(dogHelper.fetchAllDogs()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 viewState.value =
                     MainViewState(

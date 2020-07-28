@@ -6,8 +6,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_detail.*
+import tin.novakovic.core.domain_layer.Dog
 import tin.novakovic.dogwatch.*
-import tin.novakovic.dogwatch.api.Dog
 import javax.inject.Inject
 
 class DetailActivity : AppCompatActivity() {
